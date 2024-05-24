@@ -1,0 +1,6 @@
+API_BASE_URL = 'https://preprod-api.myinvois.hasil.gov.my'
+ID_SRV_BASE_URL = 'https://preprod-api.myinvois.hasil.gov.my'
+CLIENT_ID = 'df538381-3608-4cb9-b0a0-a47ad9fa2c6f'
+CLIENT_SECRET = '341caf2e-7567-4cfa-82f6-a0d45ea08e87'
+TIN = 'C10924204010'
+BRN = '200201024235'

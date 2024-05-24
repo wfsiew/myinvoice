@@ -1,0 +1,14 @@
+python -m venv env
+.\env\Scripts\Activate.ps1
+python -m pip install --upgrade pip
+pip install flit
+pip install "fastapi[all]"
+pip install "python-jose[cryptography]"
+pip install "passlib[bcrypt]"
+pip install gunicorn databases[postgresql]
+pip install pony
+pip install tortoise-orm
+pip install tortoise-orm[psycopg]
+
+
+pip freeze > requirements.txt
