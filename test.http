@@ -56,6 +56,17 @@ Content-Type: application/json
 
 ###
 
+PUT https://{{apiBaseUrl}}/api/v1.0/documents/state/8G5YHGP56EKHTPNNFB1GPNYH10/state
+Authorization: Bearer {{token}}
+Content-Type: application/json
+
+{
+  "status": "rejected",
+  "reason": "juz reject"
+}
+
+###
+
 GET https://{{apiBaseUrl}}/api/v1.0/documents/recent?pageNo=1&pageSize=20
 Authorization: Bearer {{token}}
 
