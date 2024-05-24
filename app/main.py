@@ -114,8 +114,9 @@ async def validate():
 
 @app.get('/documentsubmissions')
 async def documentsubmissions():
+    # S79HNH3XM3CBA7Y1FB1GPNYH10
     data = {
-        'inv': 'INV1234593',
+        'inv': 'INV1234594',
         'issue_date': '2024-05-23',
         'tin': TIN,
         'brn': BRN
@@ -139,11 +140,20 @@ async def documentsubmissions():
                 'format': 'JSON',
                 'document': v,
                 'documentHash': x,
-                'codeNumber': 'codenumINV1234593'
+                'codeNumber': 'codenumINV1234594'
             }
         ]
     }
     res = await cli.post(f'{API_BASE_URL}/api/v1.0/documentsubmissions', headers=headers, json=fx)
+    return res.json()
+
+@app.get('/getsubmission/:submissionUid')
+async def getsubmission(submissionUid: str):
+    cli = httpx_client_wrapper()
+    headers = {
+        'Authorization': f'Bearer {DataManager.access_token}'
+    }
+    res = await cli.get(f'{API_BASE_URL}/api/v1.0/documentsubmissions/{submissionUid}', headers=headers)
     return res.json()
 
 @app.get('/documenttypes')
