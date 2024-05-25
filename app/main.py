@@ -176,14 +176,19 @@ async def test():
 @app.get('/data', response_class=FileResponse)
 async def data(req: Request):
     return templates.TemplateResponse(
-        request=req, name='data.json.jinja2', context={"name": 'ben'},
-        media_type='application/json',
+        request=req, name='invoice.xml.jinja2', context={
+            'inv': 'INV1234595',
+            'issue_date': '2024-05-25',
+            'tin': TIN,
+            'brn': BRN
+        },
+        media_type='application/xml',
         headers={
-            'Content-disposition': 'attachment; filename=data.json',
-            'Content-Type': 'application/json',
+            'Content-disposition': 'attachment; filename=invoice.xml',
+            'Content-Type': 'application/xml',
             'Cache-Control': 'no-cache, no-store, must-revalidate',
             'Pragma': 'no-cache',
             'Expires': '0',
-            'filename': 'data.json'
+            'filename': 'invoice.xml'
         }
     )
