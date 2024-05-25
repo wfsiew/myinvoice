@@ -116,14 +116,14 @@ async def validate():
 async def documentsubmissions():
     # S79HNH3XM3CBA7Y1FB1GPNYH10
     data = {
-        'inv': 'INV1234594',
-        'issue_date': '2024-05-23',
+        'inv': 'INV1234595',
+        'issue_date': '2024-05-25',
         'tin': TIN,
         'brn': BRN
     }
     templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
     templateEnv = jinja2.Environment(loader=templateLoader)
-    template = templateEnv.get_template('invoice.json.jinja2')
+    template = templateEnv.get_template('invoice.xml.jinja2')
     s = template.render(data)
     
     cli = httpx_client_wrapper()
@@ -137,10 +137,10 @@ async def documentsubmissions():
     fx = {
         'documents': [
             {
-                'format': 'JSON',
+                'format': 'XML',
                 'document': v,
                 'documentHash': x,
-                'codeNumber': 'codenumINV1234594'
+                'codeNumber': 'codenumINV1234595'
             }
         ]
     }
