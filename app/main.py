@@ -42,7 +42,7 @@ httpx_client_wrapper = HTTPXClientWrapper()
 jobstores = {
     'default': MemoryJobStore()
 }
-scheduler = AsyncIOScheduler(jobstores=jobstores)
+scheduler = AsyncIOScheduler(jobstores=jobstores, timezone='Asia/Kuala_Lumpur')
     
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -79,12 +79,11 @@ async def get_token():
     res = await cli.post(f'{API_BASE_URL}/connect/token', headers=headers, data=data)
     m = res.json()
     DataManager.access_token = m.get('access_token')
-    return DataManager.access_token
+    print(DataManager.access_token)
 
-@scheduler.scheduled_job('interval', seconds=50)
+@scheduler.scheduled_job('interval', minutes=50)
 async def interval_task_test():
-    s = await get_token()
-    print(s)
+    await get_token()
 
 @app.get('/login')
 async def login(settings: Annotated[Settings, Depends(get_settings)]):
