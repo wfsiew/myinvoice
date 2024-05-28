@@ -5,8 +5,15 @@ from fastapi.responses import FileResponse
 from contextlib import asynccontextmanager
 from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.memory import MemoryJobStore
+from functools import lru_cache
+from typing import Annotated
+from .config import Settings
 from .constants import *
 import httpx, jinja2, json, hashlib, base64
+
+@lru_cache
+def get_settings():
+    return Settings()
 
 class DataManager:
     
@@ -80,24 +87,24 @@ async def interval_task_test():
     print(s)
 
 @app.get('/login')
-async def login():
+async def login(settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
     headers = {
         'Content-Type': 'application/x-www-form-urlencoded'
     }
     data = {
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
+        'client_id': settings.client_id,
+        'client_secret': settings.client_secret,
         'grant_type': 'client_credentials',
         'scope': 'InvoicingAPI'
     }
-    res = await cli.post(f'{API_BASE_URL}/connect/token', headers=headers, data=data)
+    res = await cli.post(f'{settings.api_base_url}/connect/token', headers=headers, data=data)
     m = res.json()
     DataManager.access_token = m.get('access_token')
     return m
 
 @app.get('/validate')
-async def validate():
+async def validate(settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
     headers = {
         'Authorization': f'Bearer {DataManager.access_token}'
@@ -106,20 +113,20 @@ async def validate():
         'idType': 'BRN',
         'idValue': '200201024235'
     }
-    res = await cli.get(f'{API_BASE_URL}/api/v1.0/taxpayer/validate/C10924204010', headers=headers, params=prm)
+    res = await cli.get(f'{settings.api_base_url}/api/v1.0/taxpayer/validate/C10924204010', headers=headers, params=prm)
     if res.status_code == 200:
         return 'success'
     
     return 'fail'
 
 @app.get('/documentsubmissions')
-async def documentsubmissions():
+async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings)]):
     # S79HNH3XM3CBA7Y1FB1GPNYH10
     data = {
         'inv': 'INV1234595',
-        'issue_date': '2024-05-25',
-        'tin': TIN,
-        'brn': BRN
+        'issue_date': '2024-05-26',
+        'tin': settings.tin,
+        'brn': settings.brn
     }
     templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
     templateEnv = jinja2.Environment(loader=templateLoader)
@@ -144,25 +151,25 @@ async def documentsubmissions():
             }
         ]
     }
-    res = await cli.post(f'{API_BASE_URL}/api/v1.0/documentsubmissions', headers=headers, json=fx)
+    res = await cli.post(f'{settings.api_base_url}/api/v1.0/documentsubmissions', headers=headers, json=fx)
     return res.json()
 
 @app.get('/getsubmission/:submissionUid')
-async def getsubmission(submissionUid: str):
+async def getsubmission(submissionUid: str, settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
     headers = {
         'Authorization': f'Bearer {DataManager.access_token}'
     }
-    res = await cli.get(f'{API_BASE_URL}/api/v1.0/documentsubmissions/{submissionUid}', headers=headers)
+    res = await cli.get(f'{settings.api_base_url}/api/v1.0/documentsubmissions/{submissionUid}', headers=headers)
     return res.json()
 
 @app.get('/documenttypes')
-async def documenttypes():
+async def documenttypes(settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
     headers = {
         'Authorization': f'Bearer {DataManager.access_token}'
     }
-    res = await cli.get(f'{API_BASE_URL}/api/v1.0/documenttypes', headers=headers)
+    res = await cli.get(f'{settings.api_base_url}/api/v1.0/documenttypes', headers=headers)
     return res.json()
 
 @app.get('/datax')
@@ -174,13 +181,13 @@ async def test():
     return json.loads(outputText)
 
 @app.get('/data', response_class=FileResponse)
-async def data(req: Request):
+async def data(req: Request, settings: Annotated[Settings, Depends(get_settings)]):
     return templates.TemplateResponse(
         request=req, name='invoice.xml.jinja2', context={
             'inv': 'INV1234595',
             'issue_date': '2024-05-25',
-            'tin': TIN,
-            'brn': BRN
+            'tin': settings.tin,
+            'brn': settings.brn
         },
         media_type='application/xml',
         headers={
