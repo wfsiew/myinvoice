@@ -124,7 +124,7 @@ async def validate(settings: Annotated[Settings, Depends(get_settings)]):
 async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings)]):
     # S79HNH3XM3CBA7Y1FB1GPNYH10
     data = {
-        'inv': 'INV1234596',
+        'inv': 'INV1234598',
         'issue_date': '2024-05-28',
         'tin': settings.tin,
         'brn': settings.brn
@@ -141,12 +141,7 @@ async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings
     }
     fx = {
         'documents': [
-            {
-                'format': 'XML',
-                'document': doc.b64Data,
-                'documentHash': doc.hashData,
-                'codeNumber': 'codenumINV1234596'
-            }
+            doc.getDoc('INV1234598')
         ]
     }
     res = await cli.post(f'{settings.api_base_url}/api/v1.0/documentsubmissions', headers=headers, json=fx)

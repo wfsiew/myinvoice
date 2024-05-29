@@ -15,3 +15,11 @@ class Document:
         s = self.data.encode('utf-8')
         c = base64.b64encode(s)
         return c.decode('utf-8')
+    
+    def getDoc(self, inv: str):
+        return {
+            'format': 'XML',
+            'document': self.b64Data,
+            'documentHash': self.hashData,
+            'codeNumber': f'codenum{inv}'
+        }
