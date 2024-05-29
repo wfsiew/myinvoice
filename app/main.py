@@ -11,7 +11,7 @@ from typing import Annotated
 from app.models import Document
 from .config import Settings
 from .constants import *
-import httpx, jinja2, json, hashlib, base64
+import httpx, jinja2, json
 
 @lru_cache
 def get_settings():
