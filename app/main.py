@@ -67,16 +67,16 @@ app.add_middleware(
 
 async def get_token():
     cli = httpx_client_wrapper()
-    headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    # headers = {
+    #     'Content-Type': 'application/x-www-form-urlencoded'
+    # }
     data = {
         'client_id': CLIENT_ID,
         'client_secret': CLIENT_SECRET,
         'grant_type': 'client_credentials',
         'scope': 'InvoicingAPI'
     }
-    res = await cli.post(f'{API_BASE_URL}/connect/token', headers=headers, data=data)
+    res = await cli.post(f'{API_BASE_URL}/connect/token', data=data)
     m = res.json()
     DataManager.access_token = m.get('access_token')
     print(DataManager.access_token)
@@ -88,16 +88,16 @@ async def interval_task_test():
 @app.get('/login')
 async def login(settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
-    headers = {
-        'Content-Type': 'application/x-www-form-urlencoded'
-    }
+    # headers = {
+    #     'Content-Type': 'application/x-www-form-urlencoded'
+    # }
     data = {
         'client_id': settings.client_id,
         'client_secret': settings.client_secret,
         'grant_type': 'client_credentials',
         'scope': 'InvoicingAPI'
     }
-    res = await cli.post(f'{settings.api_base_url}/connect/token', headers=headers, data=data)
+    res = await cli.post(f'{settings.api_base_url}/connect/token', data=data)
     m = res.json()
     DataManager.access_token = m.get('access_token')
     return m
@@ -122,8 +122,8 @@ async def validate(settings: Annotated[Settings, Depends(get_settings)]):
 async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings)]):
     # S79HNH3XM3CBA7Y1FB1GPNYH10
     data = {
-        'inv': 'INV1234595',
-        'issue_date': '2024-05-26',
+        'inv': 'INV1234596',
+        'issue_date': '2024-05-28',
         'tin': settings.tin,
         'brn': settings.brn
     }
@@ -136,8 +136,8 @@ async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings
     headers = {
         'Authorization': f'Bearer {DataManager.access_token}'
     }
-    x = hashlib.sha256(s.encode('utf-8')).hexdigest()
     d = s.encode('utf-8')
+    x = hashlib.sha256(d).hexdigest()
     c = base64.b64encode(d)
     v = c.decode('utf-8')
     fx = {
@@ -146,7 +146,7 @@ async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings
                 'format': 'XML',
                 'document': v,
                 'documentHash': x,
-                'codeNumber': 'codenumINV1234595'
+                'codeNumber': 'codenumINV1234596'
             }
         ]
     }
