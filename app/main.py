@@ -7,6 +7,8 @@ from apscheduler.schedulers.asyncio import AsyncIOScheduler
 from apscheduler.jobstores.memory import MemoryJobStore
 from functools import lru_cache
 from typing import Annotated
+
+from app.models import Document
 from .config import Settings
 from .constants import *
 import httpx, jinja2, json, hashlib, base64
@@ -131,21 +133,18 @@ async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings
     templateEnv = jinja2.Environment(loader=templateLoader)
     template = templateEnv.get_template('invoice.xml.jinja2')
     s = template.render(data)
+    doc = Document(s)
     
     cli = httpx_client_wrapper()
     headers = {
         'Authorization': f'Bearer {DataManager.access_token}'
     }
-    d = s.encode('utf-8')
-    x = hashlib.sha256(d).hexdigest()
-    c = base64.b64encode(d)
-    v = c.decode('utf-8')
     fx = {
         'documents': [
             {
                 'format': 'XML',
-                'document': v,
-                'documentHash': x,
+                'document': doc.b64Data,
+                'documentHash': doc.hashData,
                 'codeNumber': 'codenumINV1234596'
             }
         ]
