@@ -127,7 +127,7 @@ async def documentsubmissions(settings: Annotated[Settings, Depends(get_settings
         'tin': settings.tin,
         'brn': settings.brn
     }
-    templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
+    templateLoader = jinja2.FileSystemLoader(searchpath='./templates')
     templateEnv = jinja2.Environment(loader=templateLoader)
     template = templateEnv.get_template('invoice.xml.jinja2')
     s = template.render(data)
@@ -173,7 +173,7 @@ async def documenttypes(settings: Annotated[Settings, Depends(get_settings)]):
 
 @app.get('/datax')
 async def test():
-    templateLoader = jinja2.FileSystemLoader(searchpath="./templates")
+    templateLoader = jinja2.FileSystemLoader(searchpath='./templates')
     templateEnv = jinja2.Environment(loader=templateLoader)
     template = templateEnv.get_template('data.json.jinja2')
     outputText = template.render({"name": 'ben'})
@@ -182,12 +182,13 @@ async def test():
 @app.get('/data', response_class=FileResponse)
 async def data(req: Request, settings: Annotated[Settings, Depends(get_settings)]):
     return templates.TemplateResponse(
-        request=req, name='invoice.xml.jinja2', context={
+        prm = {
             'inv': 'INV1234595',
             'issue_date': '2024-05-25',
             'tin': settings.tin,
             'brn': settings.brn
-        },
+        }
+        request=req, name='invoice.xml.jinja2', context=prm,
         media_type='application/xml',
         headers={
             'Content-disposition': 'attachment; filename=invoice.xml',
