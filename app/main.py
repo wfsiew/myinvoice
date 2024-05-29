@@ -181,13 +181,13 @@ async def test():
 
 @app.get('/data', response_class=FileResponse)
 async def data(req: Request, settings: Annotated[Settings, Depends(get_settings)]):
+    prm = {
+        'inv': 'INV1234595',
+        'issue_date': '2024-05-25',
+        'tin': settings.tin,
+        'brn': settings.brn
+    }
     return templates.TemplateResponse(
-        prm = {
-            'inv': 'INV1234595',
-            'issue_date': '2024-05-25',
-            'tin': settings.tin,
-            'brn': settings.brn
-        }
         request=req, name='invoice.xml.jinja2', context=prm,
         media_type='application/xml',
         headers={
