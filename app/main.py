@@ -72,9 +72,10 @@ async def get_token():
     # headers = {
     #     'Content-Type': 'application/x-www-form-urlencoded'
     # }
+    settings = get_settings()
     data = {
-        'client_id': CLIENT_ID,
-        'client_secret': CLIENT_SECRET,
+        'client_id': settings.client_id,
+        'client_secret': settings.client_secret,
         'grant_type': 'client_credentials',
         'scope': 'InvoicingAPI'
     }
