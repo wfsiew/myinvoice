@@ -79,7 +79,7 @@ async def get_token():
         'grant_type': 'client_credentials',
         'scope': 'InvoicingAPI'
     }
-    res = await cli.post(f'{API_BASE_URL}/connect/token', data=data)
+    res = await cli.post(f'{settings.api_base_url}/connect/token', data=data)
     m = res.json()
     DataManager.access_token = m.get('access_token')
     print(DataManager.access_token)
