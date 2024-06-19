@@ -7,5 +7,9 @@ class Settings(BaseSettings):
     client_secret: str
     tin: str
     brn: str
+    api_base_url_pwc: str
+    client_id_pwc: str
+    client_secret_pwc: str
+    scope_pwc: str
 
     model_config = SettingsConfigDict(env_file=".envx")

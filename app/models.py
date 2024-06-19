@@ -1,5 +1,10 @@
 import hashlib, base64
 
+class DataManager:
+    
+    access_token = None
+    access_token_pwc = None
+
 class Document:
     
     def __init__(self, data):
