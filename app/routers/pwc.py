@@ -30,137 +30,173 @@ async def login(settings: Annotated[Settings, Depends(get_settings)]):
 async def submissions(settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
     headers = {
-        'Authorization': f'Bearer {DataManager.access_token}',
+        'Authorization': f'Bearer {DataManager.access_token_pwc}',
         'Content-Type': 'application/xml',
         'Accept': '*/*',
         'Connection': 'keep-alive',
-        'User-Agent': 'wf001',
-        'ErpId': 'wf001'
+        'User-Agent': 'PostmanRuntime/7.39.0',
+        'ErpId': 'wf002'
     }
-    doc = '''<document>
-    <supplier_name>SupplierCompany</supplier_name>
-    <supplier_tin>sup1234567890</supplier_tin>
-    <supplier_regnumber>123456789100</supplier_regnumber>
-    <supplier_sst>abcd12345678910</supplier_sst>
-    <supplier_tourismtax_number></supplier_tourismtax_number>
-    <supplier_email>supplier@test.com</supplier_email>
-    <supplier_msic>00000</supplier_msic>
-    <supplier_business_activity_description>test activity description</supplier_business_activity_description>
-    <supplier_contactnumber>123456789</supplier_contactnumber>
-    <supplier_address_line>Building 1 Road 2</supplier_address_line>
-    <supplier_address_postalZone>51470</supplier_address_postalZone>
-    <supplier_address_city>Kuala Lumpur</supplier_address_city>
-    <supplier_address_countrysubentitycode>Region 1</supplier_address_countrysubentitycode>
-    <supplier_address_country>MYS</supplier_address_country>
-    <buyer_name>BuyerCompany</buyer_name>
-    <buyer_tin>buy1234567890</buyer_tin>
-    <buyer_regnumber>123456789100</buyer_regnumber>
-    <buyer_sst>abcd12345678910</buyer_sst>
-    <buyer_email>buyer@test.com</buyer_email>
-    <buyer_contactnumber>123456789</buyer_contactnumber>
-    <buyer_address_line>Building 1 Road 2</buyer_address_line>
-    <buyer_address_postalZone>51470</buyer_address_postalZone>
-    <buyer_address_city>Kuala Lumpur</buyer_address_city>
-    <buyer_address_countrysubentitycode>Region 1</buyer_address_countrysubentitycode>
-    <buyer_address_country>MYS</buyer_address_country>
-    <shipping_recipient_name>shipping recipient name</shipping_recipient_name>
-    <shipping_recipient_address_line>Building 1 Road 2</shipping_recipient_address_line>
-    <shipping_recipient_address_postalZone>51470</shipping_recipient_address_postalZone>
-    <shipping_recipient_address_city>Kuala Lumpur</shipping_recipient_address_city>
-    <shipping_recipient_address_countrysubentitycode>Region 1</shipping_recipient_address_countrysubentitycode>
-    <shipping_recipient_address_country>MYS</shipping_recipient_address_country>
-    <shipping_recipient_tin>shi1234567890</shipping_recipient_tin>
-    <shipping_recipient_regnumber>123456789100</shipping_recipient_regnumber>
-    <invoice_number>invnumber123</invoice_number>
-    <invoice_type>01</invoice_type>
-    <original_invoice_number></original_invoice_number>
-    <issue_date>2002-05-30T09:00:00</issue_date>
-    <currency_code>MYR</currency_code>
-    <exchange_rate>1</exchange_rate>
-    <billing_frequency>Daily</billing_frequency>
-    <billing_period_start>2025-01-01</billing_period_start>
-    <billing_period_end>2025-01-31</billing_period_end>
-    <payment_mode>05</payment_mode>
-    <payment_terms>30 days</payment_terms>
-    <prepayment_amount>100</prepayment_amount>
-    <prepayment_date>2002-05-30T09:00:00</prepayment_date>
-    <prepayment_reference_number>pre123456789</prepayment_reference_number>
-    <bill_reference_number>brf123456789</bill_reference_number>
-    <customs_form_reference_number>cfr123456789</customs_form_reference_number>
-    <incoterms>testincoterm</incoterms>
-    <tax_summary>
-        <total_excluding_tax>10000</total_excluding_tax>
-        <total_including_tax>10400</total_including_tax>
-        <total_tax_amount>400</total_tax_amount>
-        <total_net_amount>10000</total_net_amount>
-        <total_payable_amount>10400</total_payable_amount>
-        <rounding_amount>0</rounding_amount>
-        <discount_amount>500</discount_amount>
-        <fee_amount>100</fee_amount>
-        <tax_type>
-            <tax_type>01</tax_type>
-            <tax_amount>400</tax_amount>
-            <tax_exemption></tax_exemption>
-            <exempted_tax_amount></exempted_tax_amount>
-            <taxable_amount>5000</taxable_amount>
-        </tax_type>
-        <tax_type>
-            <tax_type>02</tax_type>
-            <tax_amount>0</tax_amount>
-            <tax_exemption>Buyer’s sales tax exemption certificate number</tax_exemption>
-            <exempted_tax_amount>400</exempted_tax_amount>
-            <taxable_amount>5000</taxable_amount>
-        </tax_type>
-    </tax_summary>
-    <line>
-        <classification>service</classification>
-        <description>service</description>
-        <unit_price>5000</unit_price>
-        <tax_type>02</tax_type>
-        <tax_rate>0.08</tax_rate>
-        <tax_amount>0</tax_amount>
-        <tax_exemption>Buyer’s sales tax exemption certificate number</tax_exemption>
-        <exempted_tax_amount>400</exempted_tax_amount>
-        <subtotal>5000</subtotal>
-        <total_excluding_tax>5000</total_excluding_tax>
-        <quantity></quantity>
-        <measurement></measurement>
-        <discount_rate></discount_rate>
-        <discount_amount></discount_amount>
-        <fee_rate></fee_rate>
-        <fee_amount></fee_amount>
-    </line>
-      <line>
-        <classification>goods</classification>
-        <description>goods</description>
-        <unit_price>500</unit_price>
-        <tax_type>01</tax_type>
-        <tax_rate>0.08</tax_rate>
-        <tax_amount>400</tax_amount>
-        <tax_exemption></tax_exemption>
-        <exempted_tax_amount></exempted_tax_amount>
-        <subtotal>4400</subtotal>
-        <total_excluding_tax>5000</total_excluding_tax>
-        <quantity>10</quantity>
-        <measurement>piece</measurement>
-        <discount_rate>0.1</discount_rate>
-        <discount_amount>500</discount_amount>
-        <fee_rate>0.1</fee_rate>
-        <fee_amount>100</fee_amount>
-    </line>
-</document>'''
+    doc = '''<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+    <cbc:ID>INV1234567_v001</cbc:ID>
+    <cbc:IssueDate>2024-06-01</cbc:IssueDate>
+    <cbc:IssueTime>04:30:00Z</cbc:IssueTime>
+    <cbc:InvoiceTypeCode listVersionID="1.0">01</cbc:InvoiceTypeCode>
+    <cbc:DocumentCurrencyCode>MYR</cbc:DocumentCurrencyCode>
+    <cac:InvoicePeriod>
+        <cbc:StartDate>2017-11-26</cbc:StartDate>
+        <cbc:EndDate>2017-11-30</cbc:EndDate>
+        <cbc:Description>Monthly</cbc:Description>
+    </cac:InvoicePeriod>
+    <cac:AccountingSupplierParty>
+        <cbc:AdditionalAccountID schemeAgencyName="CertEX">CPT-CCN-W-211111-KL-000002</cbc:AdditionalAccountID>
+        <cac:Party>
+            <cbc:IndustryClassificationCode name="Growing of maize">01111</cbc:IndustryClassificationCode>
+            <cac:PartyIdentification>
+                <cbc:ID schemeID="TIN">C1865789030</cbc:ID>
+            </cac:PartyIdentification>
+            <cac:PartyIdentification>
+                <cbc:ID schemeID="BRN">199801008604</cbc:ID>
+            </cac:PartyIdentification>
+            <cac:PostalAddress>
+                <cbc:CityName>Kuala Lumpur</cbc:CityName>
+                <cbc:PostalZone>50480</cbc:PostalZone>
+                <cbc:CountrySubentityCode>14</cbc:CountrySubentityCode>
+                <cac:AddressLine>
+                    <cbc:Line>Lot 66</cbc:Line>
+                </cac:AddressLine>
+                <cac:AddressLine>
+                    <cbc:Line>Bangunan Merdeka</cbc:Line>
+                </cac:AddressLine>
+                <cac:AddressLine>
+                    <cbc:Line>Persiaran Jaya</cbc:Line>
+                </cac:AddressLine>
+                <cac:Country>
+                    <cbc:IdentificationCode listID="ISO3166-1" listAgencyID="6">MYS</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyLegalEntity>
+                <cbc:RegistrationName>AMS Setia Jaya Sdn. Bhd.</cbc:RegistrationName>
+            </cac:PartyLegalEntity>
+            <cac:Contact>
+                <cbc:Telephone>+60-123456789</cbc:Telephone>
+                <cbc:ElectronicMail>general.ams@supplier.com</cbc:ElectronicMail>
+            </cac:Contact>
+        </cac:Party>
+    </cac:AccountingSupplierParty>
+    <cac:AccountingCustomerParty>
+        <cac:Party>
+        <cac:PartyIdentification>
+            <cbc:ID schemeID="TIN">C10329126010</cbc:ID>
+        </cac:PartyIdentification>
+        <cac:PartyIdentification>
+            <cbc:ID schemeID="BRN">199601003944</cbc:ID>
+        </cac:PartyIdentification>
+            <cac:PostalAddress>
+                <cbc:CityName>Kuala Lumpur</cbc:CityName>
+                <cbc:PostalZone>50480</cbc:PostalZone>
+                <cbc:CountrySubentityCode>14</cbc:CountrySubentityCode>
+                <cac:AddressLine>
+                    <cbc:Line>Lot 66</cbc:Line>
+                </cac:AddressLine>
+                <cac:AddressLine>
+                    <cbc:Line>Bangunan Merdeka</cbc:Line>
+                </cac:AddressLine>
+                <cac:AddressLine>
+                    <cbc:Line>Persiaran Jaya</cbc:Line>
+                </cac:AddressLine>
+                <cac:Country>
+                    <cbc:IdentificationCode listID="ISO3166-1" listAgencyID="6">MYS</cbc:IdentificationCode>
+                </cac:Country>
+            </cac:PostalAddress>
+            <cac:PartyLegalEntity>
+                <cbc:RegistrationName>Hebat Group</cbc:RegistrationName>
+            </cac:PartyLegalEntity>
+            <cac:Contact>
+                <cbc:Telephone>+60-123456789</cbc:Telephone>
+                <cbc:ElectronicMail>name@buyer.com</cbc:ElectronicMail>
+            </cac:Contact>
+        </cac:Party>
+    </cac:AccountingCustomerParty>
+    <cac:PaymentMeans>
+        <cbc:PaymentMeansCode>01</cbc:PaymentMeansCode>
+        <cac:PayeeFinancialAccount>
+            <cbc:ID>1234567890123</cbc:ID>
+        </cac:PayeeFinancialAccount>
+    </cac:PaymentMeans>
+    <cac:PaymentTerms>
+        <cbc:Note>Payment method is cash</cbc:Note>
+    </cac:PaymentTerms>
+    <cac:TaxTotal>
+        <cbc:TaxAmount currencyID="MYR">0</cbc:TaxAmount>
+        <cac:TaxSubtotal>
+            <cbc:TaxableAmount currencyID="MYR">0</cbc:TaxableAmount>
+            <cbc:TaxAmount currencyID="MYR">0</cbc:TaxAmount>
+            <cac:TaxCategory>
+                <cbc:ID>06</cbc:ID>
+                <cac:TaxScheme>
+                    <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">OTH</cbc:ID>
+                </cac:TaxScheme>
+            </cac:TaxCategory>
+        </cac:TaxSubtotal>
+    </cac:TaxTotal>
+    <cac:LegalMonetaryTotal>
+        <cbc:LineExtensionAmount currencyID="MYR">1000</cbc:LineExtensionAmount>
+        <cbc:TaxExclusiveAmount currencyID="MYR">1000</cbc:TaxExclusiveAmount>
+        <cbc:TaxInclusiveAmount currencyID="MYR">1000</cbc:TaxInclusiveAmount>
+        <cbc:PayableAmount currencyID="MYR">1000</cbc:PayableAmount>
+    </cac:LegalMonetaryTotal>
+    <cac:InvoiceLine>
+        <cbc:ID>1</cbc:ID>
+        <cbc:InvoicedQuantity unitCode="C62">1</cbc:InvoicedQuantity>
+        <cbc:LineExtensionAmount currencyID="MYR">1000</cbc:LineExtensionAmount>
+        <cac:TaxTotal>
+            <cbc:TaxAmount currencyID="MYR">0</cbc:TaxAmount>
+            <cac:TaxSubtotal>
+                <cbc:TaxableAmount currencyID="MYR">1000</cbc:TaxableAmount>
+                <cbc:TaxAmount currencyID="MYR">0</cbc:TaxAmount>
+                <cbc:Percent>6.00</cbc:Percent>
+                <cac:TaxCategory>
+                    <cbc:ID>06</cbc:ID>
+                    <cbc:Percent>6.00</cbc:Percent>
+                    <cbc:TaxExemptionReason>Exempt New Means of Transport</cbc:TaxExemptionReason>
+                    <cac:TaxScheme>
+                        <cbc:ID schemeID="UN/ECE 5153" schemeAgencyID="6">OTH</cbc:ID>
+                    </cac:TaxScheme>
+                </cac:TaxCategory>
+            </cac:TaxSubtotal>
+        </cac:TaxTotal>
+        <cac:Item>
+            <cbc:Description>Laptop Peripherals</cbc:Description>
+            <cac:OriginCountry>
+                <cbc:IdentificationCode>MYS</cbc:IdentificationCode>
+            </cac:OriginCountry>
+            <cac:CommodityClassification>
+                <cbc:ItemClassificationCode listID="PTC">001</cbc:ItemClassificationCode>
+            </cac:CommodityClassification>
+            <cac:CommodityClassification>
+                <cbc:ItemClassificationCode listID="CLASS">001</cbc:ItemClassificationCode>
+            </cac:CommodityClassification>
+        </cac:Item>
+        <cac:Price>
+            <cbc:PriceAmount currencyID="MYR">1000</cbc:PriceAmount>
+        </cac:Price>
+        <cac:ItemPriceExtension>
+            <cbc:Amount currencyID="MYR">1000</cbc:Amount>
+        </cac:ItemPriceExtension>
+    </cac:InvoiceLine>
+</Invoice>'''
     xml = doc.encode('utf-8')
-    v = base64.b64encode(xml)
-    k = v.decode('utf-8')
-    res = await cli.post(f'{settings.api_base_url}/api/submissions', headers=headers, content=k)
+    res = await cli.post(f'{settings.api_base_url_pwc}/api/submissions', headers=headers, content=doc)
     print(res.status_code)
+    print(res)
     return 'ok'
 
 @router.get('/getsubmission')
 async def getsubmission_by_erpid(erpid: str, settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
     headers = {
-        'Authorization': f'Bearer {DataManager.access_token}',
+        'Authorization': f'Bearer {DataManager.access_token_pwc}',
         'PwC-User-Agent': 'pwc_excel',
         'Accept': '*/*',
         'Connection': 'keep-alive',
@@ -169,20 +205,20 @@ async def getsubmission_by_erpid(erpid: str, settings: Annotated[Settings, Depen
     prm = {
         'erp_id': erpid
     }
-    res = await cli.get(f'{settings.api_base_url}/api/submissions', headers=headers, params=prm)
+    res = await cli.get(f'{settings.api_base_url_pwc}/api/submissions', headers=headers, params=prm)
     return res.json()
 
 @router.get('/validate')
 async def validate(settings: Annotated[Settings, Depends(get_settings)]):
     cli = httpx_client_wrapper()
     headers = {
-        'Authorization': f'Bearer {DataManager.access_token}'
+        'Authorization': f'Bearer {DataManager.access_token_pwc}'
     }
     prm = {
         'idType': 'BRN',
         'idValue': '200201024235'
     }
-    res = await cli.get(f'{settings.api_base_url}/api/v1.0/taxpayer/validate/C10924204010', headers=headers, params=prm)
+    res = await cli.get(f'{settings.api_base_url_pwc}/api/v1.0/taxpayer/validate/C10924204010', headers=headers, params=prm)
     if res.status_code == 200:
         return 'success'
     
