@@ -5,7 +5,7 @@ from app.utils import *
 from app.models import DataManager
 from app.config import Settings
 
-import base64, traceback
+import base64, jinja2, traceback
 
 router = APIRouter(tags=['pwc'], prefix='/pwc')
 
@@ -187,8 +187,19 @@ async def submissions(response: Response, settings: Annotated[Settings, Depends(
             </cac:ItemPriceExtension>
         </cac:InvoiceLine>
     </Invoice>'''
+    
+        data = {
+            'inv': 'INV1234598',
+            'issue_date': '2024-06-02',
+            'tin': settings.tin,
+            'brn': settings.brn
+        }
+        templateLoader = jinja2.FileSystemLoader(searchpath='./templates')
+        templateEnv = jinja2.Environment(loader=templateLoader)
+        template = templateEnv.get_template('invoice.xml.jinja2')
+        s = template.render(data)
         xml = doc.encode('utf-8')
-        res = await cli.post(f'{settings.api_base_url_pwc}/api/submissions', headers=headers, content=doc)
+        res = await cli.post(f'{settings.api_base_url_pwc}/api/submissions', headers=headers, content=s)
         if res.status_code == 202:
             return 'ok'
         

@@ -1,5 +1,6 @@
 from .config import Settings
 from functools import lru_cache
+from fastapi.templating import Jinja2Templates
 import httpx
 
 @lru_cache
@@ -26,3 +27,4 @@ class HTTPXClientWrapper:
         return self.async_client
     
 httpx_client_wrapper = HTTPXClientWrapper()
+templates = Jinja2Templates(directory='templates')
