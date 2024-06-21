@@ -56,6 +56,7 @@ async def get_token():
     m = res.json()
     DataManager.access_token = m.get('access_token')
     print(DataManager.access_token)
+    print('===')
     
 async def get_token_pwc():
     cli = httpx_client_wrapper()
@@ -73,6 +74,7 @@ async def get_token_pwc():
     m = res.json()
     DataManager.access_token_pwc = m.get('access_token')
     print(DataManager.access_token_pwc)
+    print('===')
 
 @scheduler.scheduled_job('interval', minutes=50)
 async def interval_task_test():
