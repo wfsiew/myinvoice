@@ -35,8 +35,8 @@ async def submissions(response: Response, settings: Annotated[Settings, Depends(
             'Content-Type': 'application/xml',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0',
-            'ErpId': 'wf002'
+            'User-Agent': 'islandhospital_ubl',
+            'ErpId': 'wf003'
         }
         doc = '''<Invoice xmlns="urn:oasis:names:specification:ubl:schema:xsd:Invoice-2" xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2" xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
         <cbc:ID>INV1234567_v001</cbc:ID>
@@ -222,7 +222,7 @@ async def getsubmission_by_erpid(erpid: str, response: Response, settings: Annot
             'PwC-User-Agent': 'pwc_excel',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         prm = {
             'erp_id': erpid
@@ -248,7 +248,7 @@ async def getsubmissions(response: Response, settings: Annotated[Settings, Depen
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         prm = {
             'sorts': '-created',
@@ -275,7 +275,7 @@ async def getoutgoing_invoices(response: Response, settings: Annotated[Settings,
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         prm = {
             'sorts': '-id',
@@ -302,7 +302,7 @@ async def getoutgoing_invoice_by_id(outgoinginvoiceid: str, response: Response, 
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/outgoing_invoices/{outgoinginvoiceid}', headers=headers)
         if res.text == '':
@@ -325,7 +325,7 @@ async def getoutgoing_invoice_attachments_by_id(outgoinginvoiceid: str, response
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/outgoing_invoices/{outgoinginvoiceid}/attachments', headers=headers)
         if res.text == '':
@@ -348,7 +348,7 @@ async def getoutgoing_invoice_ubl_by_id(outgoinginvoiceid: str, response: Respon
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/outgoing_invoices/{outgoinginvoiceid}/ubl', headers=headers)
         if res.text == '':
@@ -371,7 +371,7 @@ async def getoutgoing_invoice_pdf_by_id(outgoinginvoiceid: str, response: Respon
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/outgoing_invoices/{outgoinginvoiceid}/pdf', headers=headers)
         if res.text == '':
@@ -394,7 +394,7 @@ async def getincoming_invoices(response: Response, settings: Annotated[Settings,
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         prm = {
             'sorts': '-id',
@@ -421,7 +421,7 @@ async def getincoming_invoice_by_id(incominginvoiceid: str, response: Response, 
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/incoming_invoices/{incominginvoiceid}', headers=headers)
         if res.text == '':
@@ -444,7 +444,7 @@ async def getincoming_invoice_attachments_by_id(incominginvoiceid: str, response
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/incoming_invoices/{incominginvoiceid}/attachments', headers=headers)
         if res.text == '':
@@ -467,7 +467,7 @@ async def getincoming_invoice_ubl_by_id(incominginvoiceid: str, response: Respon
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/incoming_invoices/{incominginvoiceid}/ubl', headers=headers)
         if res.text == '':
@@ -490,7 +490,7 @@ async def getincoming_invoice_pdf_by_id(incominginvoiceid: str, response: Respon
             'Authorization': f'Bearer {DataManager.access_token_pwc}',
             'Accept': '*/*',
             'Connection': 'keep-alive',
-            'User-Agent': 'PostmanRuntime/7.39.0'
+            'User-Agent': 'islandhospital_ubl'
         }
         res = await cli.get(f'{settings.api_base_url_pwc}/api/incoming_invoices/{incominginvoiceid}/pdf', headers=headers)
         if res.text == '':
